@@ -1,0 +1,19 @@
+---
+- name: docker-build-push
+  hosts: docker
+  become: true
+
+  tasks:
+  - name: change dir to /opt/docker
+    ansible.builtin.shell: cd /opt/docker
+
+  - name: execute shell command to build dockerfile
+    ansible.builtin.shell: docker build -t sindhushetty/deploytomcat /opt/docker
+
+  - name: Log into DockerHub
+    docker_login:
+      username: sindhushetty
+      password: dckr_pat_qL23D7rkPhcnS4JfQaU_Rbe7oKQ
+
+  - name: Execute the command to push the image to dockerhub
+    ansible.builtin.shell: docker push sindhushetty/deploytomcat
